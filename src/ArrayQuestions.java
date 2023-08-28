@@ -21,8 +21,33 @@ public class ArrayQuestions {
         System.out.println(arr[k-1]);
     }
 
-    public static void zeroAndOneSorting(int[] arr){
+    public static int minimumNumberOfJumps(int[] arr){
+        if (arr.length <= 1){
+            return -1;
+        }
 
+        if (arr[0] == 0){
+            return -1;
+        }
+
+        int maxReach=arr[0], steps=arr[0], jumps=1;
+        for (int i=1; i<arr.length; i++){
+            if (i==arr.length-1){
+                return jumps;
+            }
+
+            maxReach = Math.max(maxReach, i+arr[i]);
+            steps-=1;
+
+            if (steps == 0){
+                if (i >= maxReach){
+                    return -1;
+                }
+                steps = maxReach - i;
+                jumps += 1;
+            }
+        }
+        return -1;
     }
 
     public static void main(String[] args){
@@ -31,8 +56,10 @@ public class ArrayQuestions {
         int[] result = minimumMaximum(arr1);
         kthSmallestElement(arr, 3);
         System.out.println(Arrays.toString(result));
-        int[] arr2 = {0, 2, 1, 2, 0};
-        zeroAndOneSorting(arr2);
+        int[] arr2 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+        int[] arr3 = {2, 1, 0, 3};
+        System.out.println("Minimum jumps: " + minimumNumberOfJumps(arr3));
+
 
     }
 
