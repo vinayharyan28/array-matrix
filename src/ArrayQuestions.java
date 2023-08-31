@@ -1,4 +1,8 @@
 import java.util.Arrays;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class ArrayQuestions {
@@ -72,6 +76,167 @@ public class ArrayQuestions {
         return arr3;
     }
 
+    private static class Interval{
+        int start;
+        int end;
+
+        public Interval(int start, int end){
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    public static HashSet<Integer> findUnion(int[] arr1, int[] arr2){
+        HashSet<Integer> set = new HashSet<>();
+        for (int i: arr1){
+            set.add(i);
+        }
+
+        for (int j: arr2){
+            set.add(j);
+        }
+
+        return set;
+    }
+
+    public static HashSet<Integer> findIntersection(int[] arr1, int[] arr2){
+        HashSet<Integer> set = new HashSet<>();
+        HashSet<Integer> result = new HashSet<>();
+        for (int i: arr1){
+            set.add(i);
+        }
+
+        for (int j: arr2){
+            if (set.contains(j)){
+                result.add(j);
+            }
+        }
+        return result;
+    }
+
+    public static int[] separateNegativeElement(int[] arr){
+        int[] result = new int[arr.length];
+        int count = 0;
+        for (int k : arr) {
+            if (k > 0) {
+                result[count++] = k;
+            }
+        }
+
+        for (int i : arr) {
+            if (i < 0) {
+                result[count++] = i;
+            }
+        }
+        arr = result;
+        return arr;
+    }
+
+    public static int[] arrayRotatedByOne(int[] arr){
+        int temp = arr[arr.length-1];
+        for (int i=arr.length-1; i>0; i--){
+            arr[i] = arr[i-1];
+        }
+        arr[0] = temp;
+        return arr;
+    }
+
+    public static int findMaximumSubArraySum(int[] arr){  // Kadane's Algorithm
+        int maxSubArray = arr[0], maxSoFar = 0, tempStart=0, start=0, end=0;
+        for (int i=1; i<arr.length; i++){
+            if (arr[i] > maxSubArray + arr[i]){
+                maxSubArray = arr[i];
+                tempStart = i;
+            }else{
+                maxSubArray += arr[i];
+            }
+            if (maxSubArray > maxSoFar){
+                maxSoFar = maxSubArray;
+                start = tempStart;
+                end = i;
+            }
+        }
+        System.out.print("sub array: ");
+        for (int i=start; i<=end; i++){
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+        return maxSoFar;
+    }
+
+    public static int maximizeMinimizeDiffHeight(int[] arr, int n, int k){
+        Arrays.sort(arr); // maximum possible height difference
+        int tempMin, tempMax, min=arr[0], max=arr[n-1];
+        int ans = max - min;
+
+        for(int i=1; i<n; i++){
+            if (arr[i] < k){
+                continue;
+            }
+            tempMin = Math.min(min + k, arr[i] - k);
+            tempMax = Math.max(arr[i-1]+k, max-k);
+            ans = Math.min(ans, tempMax - tempMin);
+        }
+        return ans;
+    }
+
+    public static ArrayList<Integer> findDuplicateElement(int[] arr){
+        HashSet<Integer> result = new HashSet<>();
+        ArrayList<Integer> arr2 = new ArrayList<>();
+        for (int element: arr){
+            if (result.contains(element)){
+                arr2.add(element);
+            }
+            result.add(element);
+        }
+        return arr2;
+    }
+
+    public static List<Interval> merge(List<Interval> intervals){
+        if (intervals == null || intervals.size() <= 1){
+            return intervals;
+        }
+
+        intervals.sort(Comparator.comparingInt(interval -> interval.start));
+        List<Interval> merged = new ArrayList<>();
+        Interval current = intervals.get(0);
+
+        for (Interval interval: intervals){
+            if (interval.start <= current.end){
+                current.end = Math.max(current.end, interval.end);
+            }else {
+                merged.add(current);
+                current = interval;
+            }
+        }
+
+        merged.add(current);
+        return merged;
+
+    }
+
+
+    public static List<Interval> merging(List<Interval> intervals){
+        if (intervals == null || intervals.size() <=1){
+            return intervals;
+        }
+
+        intervals.sort(Comparator.comparingInt(interval -> interval.start));
+        Interval current = intervals.get(0);
+        ArrayList<Interval> merged = new ArrayList<>();
+        for (Interval interval: intervals){
+            if (interval.start <= current.end){
+                current.end = Math.max(current.end, interval.end);
+            }else{
+                merged.add(current);
+                current = interval;
+            }
+        }
+        merged.add(current);
+        return merged;
+    }
+
+
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
         int[] arr1 = {22, 14, 8, 17, 35, 3};
@@ -83,6 +248,24 @@ public class ArrayQuestions {
         int[] arr11 = {4, 7, 8};
         System.out.println("Minimum jumps: " + minimumNumberOfJumps(arr3));
         System.out.println("Merge two sorted array: " + Arrays.toString(mergeTwoSortedArrays(arr10, arr11)));
+        System.out.println(Arrays.toString(separateNegativeElement(new int[] {1, 2,  -4, -5, 2, -7, 3, 2, -6, -8, -9, 3, 2,  1})));
+        System.out.println("union: " + findUnion(new int[] {7, 1, 5, 2, 3, 6}, new int[] {3, 8, 6, 20, 7}));
+        System.out.println("intersection: " + findIntersection(new int[] {7, 1, 5, 2, 3, 6}, new int[] {3, 8, 6, 20, 7}));
+        System.out.println("rotated by one: " + Arrays.toString(arrayRotatedByOne(new int[] {3, 8, 6, 20, 7})));
+        System.out.println("max sum: "+ findMaximumSubArraySum(new int[] {-2, -3, 4, -1, -2, 1, 5, -3}));
+        System.out.println("maximizeMinimizeDiffHeight: " + maximizeMinimizeDiffHeight(new int[] {1, 15, 10}, 3, 6));
+        System.out.println("find duplicate inside array: " + findDuplicateElement(new int[] {1, 2, 3, 4 ,3}));
+        List<ArrayQuestions.Interval> intervals = new ArrayList<>();
+        intervals.add(new ArrayQuestions.Interval(1, 3));
+        intervals.add(new ArrayQuestions.Interval(2, 6));
+        intervals.add(new ArrayQuestions.Interval(8, 10));
+        intervals.add(new ArrayQuestions.Interval(15, 18));
+
+        List<ArrayQuestions.Interval> merged = merging(intervals);
+        for(ArrayQuestions.Interval interval: merged){
+            System.out.println(interval.start + " " + interval.end);
+        }
+
     }
 
 }
