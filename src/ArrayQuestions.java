@@ -236,6 +236,60 @@ public class ArrayQuestions {
         return merged;
     }
 
+    public static String nextLexicographicPermutation(String s){
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+
+        // Find the first character that is smaller than its next character
+        int index1 = n - 2;
+        while (index1 >= 0 && arr[index1] >= arr[index1+1]){
+            index1--;
+        }
+
+        if (index1 == -1){
+            return new StringBuilder(s).reverse().toString();
+        }
+
+        // Find the smallest character greater thant arr[index1]
+        int index2 = n - 1;
+        while (arr[index2] <= arr[index1]){
+            index2--;
+        }
+
+        // Swap
+        char temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+
+        // Reverse the substring from index1 + 1 to the end
+        reverseSubstring(arr, index1 + 1, n-1);
+        return new String(arr);
+    }
+
+    private static void reverseSubstring(char[] arr, int start, int end){
+        while (start < end){
+            char temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    public static void countInversion(int[] arr){
+        int count = 0;
+        for (int i=0; i<arr.length; i++){
+            for (int j=i+1; j<arr.length; j++){
+                if (arr[i] > arr[j]){
+                    System.out.print("(" + arr[i] + ", " + arr[j]+") ");
+                    count++;
+                }
+            }
+        }
+        System.out.println();
+        System.out.println("Total inversion count: " + count);
+    }
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -265,6 +319,11 @@ public class ArrayQuestions {
         for(ArrayQuestions.Interval interval: merged){
             System.out.println(interval.start + " " + interval.end);
         }
+
+        String inputString = "abcde";
+        String nextPermutation = nextLexicographicPermutation(inputString);
+        System.out.println("Next permutation: " + nextPermutation);
+        countInversion(new int[] {8, 4, 2, 1});
 
     }
 
