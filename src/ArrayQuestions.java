@@ -290,6 +290,60 @@ public class ArrayQuestions {
         System.out.println("Total inversion count: " + count);
     }
 
+    public static int inversionCountUsingMergeSort(int[] arr){
+        if (arr == null || arr.length <= 1){
+            return 0; // No inversion in an empty or one-element array
+        }
+
+        int[] temp = new int[arr.length];
+        return mergeSortAndCount(arr, temp, 0, arr.length-1);
+    }
+
+    private static int mergeSortAndCount(int[] arr, int[] temp, int left, int right){
+        int inversionCount = 0;
+        if (left < right){
+            int mid = left + (right - left) / 2;
+
+            // Recursively sort and count inversion in the left and right halves
+            inversionCount += mergeSortAndCount(arr, temp, left, mid);
+            inversionCount += mergeSortAndCount(arr, temp, mid+1, right);
+
+            // Merge the two sorted sub arrays and count inversions
+            inversionCount += mergeWithCount(arr, temp, left, mid, right);
+        }
+        return inversionCount;
+    }
+
+    private static int mergeWithCount(int[] arr, int[] temp, int left, int mid, int right){
+        int i = left, j = mid + 1, k = left, inversionCount = 0;
+        while (i <= mid && j <= right){
+            if (arr[i] < arr[j]){
+                temp[k++] = arr[i++];
+            }else{
+                // if arr[i] > arr[j], it's an inversion
+                temp[k++] = arr[j++];
+                inversionCount += (mid - i + 1);
+            }
+        }
+
+        // Copy the remaining elements from the left sub array
+        while (i <= mid){
+            temp[k++] = arr[i++];
+        }
+
+        // Copy the remaining elements from the right sub array
+        while (j <= right){
+            temp[k++] = arr[j++];
+        }
+
+        // Copy the merged elements back to the original array
+        for (i=left; i<=right; i++){
+            arr[i] = temp[i];
+        }
+
+        return inversionCount;
+    }
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -325,6 +379,7 @@ public class ArrayQuestions {
         System.out.println("Next permutation: " + nextPermutation);
         countInversion(new int[] {8, 4, 2, 1});
 
+        System.out.println("Inversion count using merge sort: " + inversionCountUsingMergeSort(new int[] {8, 4, 2, 1}));
     }
 
 }
