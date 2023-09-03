@@ -322,6 +322,9 @@ public class ArrayQuestions {
             }else{
                 // if arr[i] > arr[j], it's an inversion
                 temp[k++] = arr[j++];
+                // This is used to count the number of inversion during this merge step
+                // Calculate the number of elements in the left sub array that are greater than the current element from the right subarray
+
                 inversionCount += (mid - i + 1);
             }
         }
@@ -342,6 +345,21 @@ public class ArrayQuestions {
         }
 
         return inversionCount;
+    }
+
+    public static int buySellStock(int[] arr){
+        if (arr == null || arr.length <= 1){
+            return 0;
+        }
+
+        int sellWithProfit=0, buyMinimumPrice=arr[0];
+        for(int i=1; i<arr.length; i++){
+            if (buyMinimumPrice > arr[i]){
+                buyMinimumPrice = arr[i];
+            }else{
+                sellWithProfit = Math.max(sellWithProfit, arr[i]-buyMinimumPrice);
+            }
+        }return sellWithProfit;
     }
 
 
@@ -380,6 +398,7 @@ public class ArrayQuestions {
         countInversion(new int[] {8, 4, 2, 1});
 
         System.out.println("Inversion count using merge sort: " + inversionCountUsingMergeSort(new int[] {8, 4, 2, 1}));
+        System.out.println("Buy Sell stock: " + buySellStock(new int[] {7, 6, 4, 3, 1} ));
     }
 
 }
