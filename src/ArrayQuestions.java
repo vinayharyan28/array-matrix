@@ -1,8 +1,5 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.nio.channels.Pipe;
+import java.util.*;
 
 
 public class ArrayQuestions {
@@ -362,6 +359,79 @@ public class ArrayQuestions {
         }return sellWithProfit;
     }
 
+    public static void pairSumCount(int[] arr, int k){
+        for (int i=0; i<arr.length; i++){
+            for (int j=i+1; j<arr.length; j++){
+                if (arr[i] + arr[j] == k){
+                    System.out.print("("+arr[i]+","+arr[j]+")");
+                }
+            }
+        }
+    }
+
+    public static int getPairsCount(int[] arr, int n, int k){
+        HashMap<Integer, Integer> m = new HashMap<>();
+        int count = 0;
+        for (int i=0; i<n; i++){
+            if (m.containsKey(k-arr[i])){
+                count += m.get(k - arr[i]);
+            }
+
+            if (m.containsKey(arr[i])){
+                m.put(arr[i], m.get(arr[i]) + 1);
+            }else{
+                m.put(arr[i], 1);
+            }
+        }
+        return count;
+    }
+
+    public static void findCommonElementThreeSortedArray(int[] arr1, int[] arr2, int[] arr3){
+        HashSet<Integer> set1 = new HashSet<>();
+        HashSet<Integer> set2 = new HashSet<>();
+        for (int a: arr1){
+            set1.add(a);
+        }
+
+        for (int b: arr2){
+            set2.add(b);
+        }
+
+        for (int c: arr3){
+            if (set1.contains(c) && set2.contains(c)){
+                System.out.print(c + " ");
+            }
+        }
+    }
+
+    public static ArrayList<Integer> alternateNegativePositiveNumber(int[] arr){
+        ArrayList<Integer> positive = new ArrayList<>();
+        ArrayList<Integer> negative = new ArrayList<>();
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int j : arr) {
+            if (j < 0) {
+                negative.add(j);
+            } else {
+                positive.add(j);
+            }
+        }
+
+        while (!positive.isEmpty() && !negative.isEmpty()){
+            result.add(negative.remove(0));
+            result.add(positive.remove(0));
+        }
+
+        while (!positive.isEmpty()){
+            result.add(positive.remove(0));
+        }
+
+        while (!negative.isEmpty()){
+            result.add(negative.remove(0));
+        }
+
+        return result;
+    }
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -399,6 +469,19 @@ public class ArrayQuestions {
 
         System.out.println("Inversion count using merge sort: " + inversionCountUsingMergeSort(new int[] {8, 4, 2, 1}));
         System.out.println("Buy Sell stock: " + buySellStock(new int[] {7, 6, 4, 3, 1} ));
+        pairSumCount(new int[] {1, 5, 7, -1}, 6);
+        System.out.println();
+        System.out.println(getPairsCount(new int[] {1, 1, 1, 1}, 4, 2));
+        findCommonElementThreeSortedArray(
+                new int[] {1, 5, 5} ,
+                new int[] {3, 4, 5, 5, 10},
+                new int[] {5, 5, 10, 20}
+        );
+
+        System.out.println();
+        System.out.println(alternateNegativePositiveNumber(new int[] {1, 2, 3, -4, -1, 4}));
+
+
     }
 
 }
