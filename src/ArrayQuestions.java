@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.nio.channels.Pipe;
 import java.util.*;
 
@@ -433,6 +434,44 @@ public class ArrayQuestions {
     }
 
 
+    public static boolean subArrayWithZeroSum(int[] arr){  // Kadane's Algorithm
+        for (int i=0; i<arr.length; i++){
+            int sum = arr[i];
+            if (sum == 0){
+                return true;
+            }
+            for (int j=i+1; j<arr.length; j++){
+                sum += arr[j];
+                if (sum == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean subArrayWithZeroSumCumulativeSum(int[] arr){
+        HashSet<Integer> set = new HashSet<>();
+        int cumulativeSum = 0;
+        for (int element: arr){
+            cumulativeSum += element;
+            if (cumulativeSum == 0 || set.contains(cumulativeSum)){
+                return true;
+            }
+            set.add(element);
+        }return false;
+    }
+
+    public static BigInteger largeNumberFactorial(int number){
+        BigInteger result = BigInteger.ONE;
+        for (int i=1; i<=number; i++){
+            result = result.multiply(BigInteger.valueOf(i));
+        }
+        return result;
+
+    }
+
+
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
         int[] arr1 = {22, 14, 8, 17, 35, 3};
@@ -480,7 +519,9 @@ public class ArrayQuestions {
 
         System.out.println();
         System.out.println(alternateNegativePositiveNumber(new int[] {1, 2, 3, -4, -1, 4}));
-
+        System.out.println(subArrayWithZeroSum(new int[] {-3, 2, 3, 1, 6}));
+        System.out.println(subArrayWithZeroSumCumulativeSum(new int[] {-3, 2, 3, 1, 6}));
+        System.out.println(largeNumberFactorial(100));
 
     }
 
