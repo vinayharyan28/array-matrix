@@ -471,6 +471,72 @@ public class ArrayQuestions {
 
     }
 
+    public static int getMaxProductSum(int[] arr){
+        if(arr == null || arr.length == 0){
+            return -1;
+        }
+        int maxValue=arr[0], minValue=arr[0], maxProductSum=0;
+        for (int i=1; i<arr.length; i++){
+            // If multiply by -ve maxValue become minValue and minValue become maxValue
+            if (arr[i] < 0){
+                int temp = maxValue;
+                maxValue = minValue;
+                minValue = temp;
+            }
+            maxValue = Math.max(arr[i], arr[i]*maxValue);
+            minValue = Math.min(arr[i], arr[i]*minValue);
+            maxProductSum = Math.max(maxProductSum, Math.max(minValue, maxValue));
+        }
+        return maxProductSum;
+    }
+
+    public static int longestConsecutiveSubsequence(int[] arr){
+        HashSet<Integer> set = new HashSet<>();
+        for (int j : arr) {
+            set.add(j);
+        }
+        Integer[] arr1 = set.toArray(new Integer[0]);
+        int count = 1;
+        for (int i=0; i<arr1.length-1; i++){
+            if (arr1[i]+1 == arr1[i+1]){
+                count++;
+            }else {
+                return count;
+            }
+        }return count;
+    }
+
+
+    public static int longestConsecutive(int[] numbers){
+        if (numbers == null || numbers.length == 0){
+            return 0;
+        }
+
+        HashSet<Integer> numberSet = new HashSet<>();
+        for (int num: numbers){
+            numberSet.add(num);
+        }
+
+        int longestStreak = 0;
+
+        for (int num: numberSet){
+            if (!numberSet.contains(num - 1)){
+                int currentNumber = num;
+                int currentStreak = 1;
+                while (numberSet.contains(currentNumber + 1)){
+                    currentNumber++;
+                    currentStreak++;
+                }
+                longestStreak = Math.max(longestStreak, currentStreak);
+                return longestStreak;
+            }
+        }
+        return longestStreak;
+
+    }
+
+
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -522,7 +588,8 @@ public class ArrayQuestions {
         System.out.println(subArrayWithZeroSum(new int[] {-3, 2, 3, 1, 6}));
         System.out.println(subArrayWithZeroSumCumulativeSum(new int[] {-3, 2, 3, 1, 6}));
         System.out.println(largeNumberFactorial(100));
-
+        System.out.println(getMaxProductSum(new int[] { -2, -3, 0, -2, -40}));
+        System.out.println(longestConsecutiveSubsequence(new int[] {1, 9, 3, 10, 4, 20, 2}));
     }
 
 }
