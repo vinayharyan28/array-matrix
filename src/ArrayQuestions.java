@@ -535,6 +535,31 @@ public class ArrayQuestions {
 
     }
 
+    public static HashSet<Integer> findALlElementsThatAppearMoreThanNbyKTime(int[] arr, int k){
+        int number = arr.length / k;
+        System.out.println("number: " + number);
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i: arr){
+            if (map.containsKey(i)){
+                map.put(i, map.get(i)+1);
+            }else{
+                map.put(i, 1);
+            }
+        }
+
+        System.out.println(map);
+        HashSet<Integer> set = new HashSet<>();
+        for (Map.Entry<Integer, Integer> entry: map.entrySet()){
+            if (entry.getValue() > number){
+                set.add(entry.getKey());
+            }
+        }
+
+        return set;
+
+    }
+
 
 
 
@@ -590,6 +615,8 @@ public class ArrayQuestions {
         System.out.println(largeNumberFactorial(100));
         System.out.println(getMaxProductSum(new int[] { -2, -3, 0, -2, -40}));
         System.out.println(longestConsecutiveSubsequence(new int[] {1, 9, 3, 10, 4, 20, 2}));
+
+        System.out.println(findALlElementsThatAppearMoreThanNbyKTime(new int[] {3, 1, 2, 2, 1, 2, 3, 3}, 4));
     }
 
 }
