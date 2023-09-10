@@ -548,19 +548,32 @@ public class ArrayQuestions {
             }
         }
 
-        System.out.println(map);
         HashSet<Integer> set = new HashSet<>();
         for (Map.Entry<Integer, Integer> entry: map.entrySet()){
             if (entry.getValue() > number){
                 set.add(entry.getKey());
             }
         }
-
         return set;
-
     }
 
-
+    public static int maximumProfitByBuyingSellingShare(int[] prices){
+        int n = prices.length;
+        int firstBuy=Integer.MIN_VALUE;
+        int firstSell=0;
+        int secondBuy=Integer.MIN_VALUE;
+        int secondSell=0;
+        if (n == 1){
+            return 0;
+        }
+        for (int price: prices){
+            firstBuy = Math.max(firstBuy, -price);
+            firstSell = Math.max(firstSell, firstBuy+price);
+            secondBuy = Math.max(secondBuy, firstSell-price);
+            secondSell = Math.max(secondSell, secondBuy + price);
+        }
+        return secondSell;
+    }
 
 
     public static void main(String[] args){
@@ -617,6 +630,7 @@ public class ArrayQuestions {
         System.out.println(longestConsecutiveSubsequence(new int[] {1, 9, 3, 10, 4, 20, 2}));
 
         System.out.println(findALlElementsThatAppearMoreThanNbyKTime(new int[] {3, 1, 2, 2, 1, 2, 3, 3}, 4));
+        System.out.println(maximumProfitByBuyingSellingShare(new int[] {10, 22, 5, 75, 65, 80}));
     }
 
 }
