@@ -575,6 +575,38 @@ public class ArrayQuestions {
         return secondSell;
     }
 
+    public static boolean findWhetherArraySubsetOfAnotherArray(int[] arr1, int[] arr2){
+        int i, j;
+        for(i=0; i< arr2.length; i++){
+            for (j=0; j<arr1.length; j++){
+                if (arr2[i] == arr1[j]){
+                    break;
+                }
+            }
+            if (j == arr2.length-1){
+                return false;
+            }
+        }return true;
+    }
+
+    public static boolean isSubset(int[] arr1, int[] arr2){
+        int[] sortedArray1 = Arrays.copyOf(arr1, arr1.length);
+        int[] sortedArray2 = Arrays.copyOf(arr2, arr2.length);
+        Arrays.sort(sortedArray1);
+        Arrays.sort(sortedArray2);
+        int i=0, j=0;
+        while (i < sortedArray1.length && j < sortedArray2.length){
+            if (sortedArray1[i] < sortedArray2[j]){
+                i++;
+            }else if(sortedArray1[i] == sortedArray2[j]){
+                i++;
+                j++;
+            }else {
+                return false;
+            }
+        }return j == sortedArray2.length;
+    }
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -631,6 +663,8 @@ public class ArrayQuestions {
 
         System.out.println(findALlElementsThatAppearMoreThanNbyKTime(new int[] {3, 1, 2, 2, 1, 2, 3, 3}, 4));
         System.out.println(maximumProfitByBuyingSellingShare(new int[] {10, 22, 5, 75, 65, 80}));
+        System.out.println(findWhetherArraySubsetOfAnotherArray(new int[] {1, 2, 3, 4, 5, 6}, new int[] {1, 2, 4}));
+        System.out.println(isSubset(new int[] {1, 2, 3, 4, 5, 6}, new int[] {10, 2, 4}));
     }
 
 }
