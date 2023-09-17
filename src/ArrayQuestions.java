@@ -607,6 +607,65 @@ public class ArrayQuestions {
         }return j == sortedArray2.length;
     }
 
+    public static int waterTrapped(int[] arr){
+        int leftPointer=0, rightPointer=arr.length-1, maxLeftSide=0, maxRightSide=0, trappedWaterCount=0;
+        while (leftPointer < rightPointer){
+            if (arr[leftPointer] <= arr[rightPointer]){
+                maxLeftSide = Math.max(arr[leftPointer], maxLeftSide);
+                trappedWaterCount += maxLeftSide - arr[leftPointer];
+                leftPointer++;
+            }else{
+                maxRightSide = Math.max(arr[rightPointer], maxRightSide);
+                trappedWaterCount += maxRightSide - arr[rightPointer];
+                rightPointer--;
+            }
+        }return trappedWaterCount;
+    }
+
+    public static int chocolateDistribution(int[] chocolates, int k){
+        if (chocolates.length < k){
+            return -1;
+        }
+
+        int minimumDifference = Integer.MAX_VALUE;
+        Arrays.sort(chocolates);
+        for (int i=0; i+k-1<chocolates.length; i++){
+            int minimumDifferenceBetweenMaxAndMin  = chocolates[i+k-1] - chocolates[i];
+            minimumDifference = Math.min(minimumDifferenceBetweenMaxAndMin, minimumDifference);
+        }
+        return minimumDifference;
+    }
+
+    public static void smallestSubArraySum(int[] arr, int targetSum){
+        int minLength = Integer.MAX_VALUE;
+        int currentSum = 0;
+        int left = 0;
+        int index1=0, index2=0;
+
+        for (int right=0; right < arr.length; right++){
+            currentSum += arr[right];
+            while (currentSum > targetSum){
+                // minLength = Math.min(minLength, right-left+1);
+                if (right - left + 1 < minLength){
+                    minLength = right - left + 1;
+                    index1 = left;
+                    index2 = right;
+                }
+                currentSum -= arr[left];
+                left++;
+            }
+        }
+
+        System.out.print("Sub array with max sum: ");
+        if (minLength != Integer.MAX_VALUE){
+            for (int i=index1; i<=index2; i++){
+                System.out.print(arr[i] + " ");
+            }System.out.println("\nSub array minimum length is: " + minLength);
+        }else {
+            System.out.print("No Sub array found.");
+        }
+    }
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -665,6 +724,10 @@ public class ArrayQuestions {
         System.out.println(maximumProfitByBuyingSellingShare(new int[] {10, 22, 5, 75, 65, 80}));
         System.out.println(findWhetherArraySubsetOfAnotherArray(new int[] {1, 2, 3, 4, 5, 6}, new int[] {1, 2, 4}));
         System.out.println(isSubset(new int[] {1, 2, 3, 4, 5, 6}, new int[] {10, 2, 4}));
+        System.out.println("Trapped water: " + waterTrapped(new int[] {2, 0, 2}));
+
+        System.out.println(chocolateDistribution(new int[] {12, 4, 7, 9, 2, 23, 25, 41, 30}, 5));
+        smallestSubArraySum(new int[] {1, 4, 45, 6, 0, 19}, 51);
     }
 
 }
