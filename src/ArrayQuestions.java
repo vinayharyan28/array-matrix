@@ -1,3 +1,4 @@
+import javax.xml.stream.FactoryConfigurationError;
 import java.math.BigInteger;
 import java.nio.channels.Pipe;
 import java.util.*;
@@ -666,6 +667,115 @@ public class ArrayQuestions {
         }
     }
 
+    public static int[] threeWayPartition(int[] arr, int low, int high){
+        int lowerPointer = 0;
+        int middlePointer = 0;
+        int higherPointer = arr.length - 1;
+        while (middlePointer <= higherPointer){
+            if (arr[middlePointer] < low){
+                int temp = arr[lowerPointer];
+                arr[lowerPointer] = arr[middlePointer];
+                arr[middlePointer] = temp;
+                lowerPointer++;
+                middlePointer++;
+            }else if (arr[middlePointer] > high){
+                int temp = arr[middlePointer];
+                arr[middlePointer] = arr[higherPointer];
+                arr[higherPointer] = temp;
+                higherPointer--;
+            }else {
+                middlePointer++;
+            }
+        }
+        return arr;
+    }
+
+    public static int minimumSwaps(int[] arr, int k){
+        int start = 0;
+        int end = arr.length-1;
+        int count = 0;
+        while (start <= end){
+            if (arr[start] > k  && arr[end] <= k) {
+                int temp = arr[start];
+                arr[start] = arr[end];
+                arr[end] = temp;
+                end--;
+                count++;
+            } else if (arr[start] > k && arr[end]>k){
+                end--;
+            } else {
+                start++;
+            }
+        }
+        return count;
+    }
+
+    public static boolean checkArrayIsPalindromeOrNot(int[] arr){
+        if (arr.length < 1){
+            return false;
+        }
+        for (int j : arr) {
+            String str = ((Integer) j).toString();
+            StringBuilder stringBuilder1 = new StringBuilder(str);
+            StringBuilder stringBuilder2 = new StringBuilder(str);
+            if (!stringBuilder1.reverse().toString().contentEquals(stringBuilder2)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int medianOfTwoSortedArraySameSize(int[] arr1, int[] arr2){
+        int size = arr1.length;
+        int[] arr3 = new int[arr1.length+arr2.length];
+        int arr1Index = 0, arr2Index = 0, arr3Index = 0;
+        while (arr1Index < size && arr2Index < size){
+            if (arr1[arr1Index] < arr2[arr2Index]){
+                arr3[arr3Index++] = arr1[arr1Index++];
+            }else{
+                arr3[arr3Index++] = arr2[arr2Index++];
+            }
+        }
+
+        while (arr1Index < size){
+            arr3[arr3Index++] = arr1[arr1Index++];
+        }
+
+        while (arr2Index < size){
+            arr3[arr3Index++] = arr2[arr2Index++];
+        }
+
+        return (arr3[size-1] + arr3[size])/2;
+    }
+
+    public static int findMedianOfTwoSortedArraysOfDifferentSizes(int[] arr1, int[] arr2){
+        int[] arr3 = new int[arr1.length+arr2.length];
+        int arr1Index=0, arr2Index=0, arr3Index=0;
+        while (arr1Index < arr1.length && arr2Index < arr2.length){
+            if (arr1[arr1Index] < arr2[arr2Index]){
+                arr3[arr3Index++] = arr1[arr1Index++];
+            }else {
+                arr3[arr3Index++] = arr2[arr2Index++];
+            }
+        }
+
+        while (arr1Index < arr1.length){
+            arr3[arr3Index++] = arr1[arr1Index++];
+        }
+
+        while (arr2Index < arr2.length){
+            arr3[arr3Index++] = arr2[arr2Index++];
+        }
+
+        int arr3Length = arr3.length;
+        if (arr3Length % 2 == 0){
+            int median = arr3Length/2;
+            return (arr3[median] + arr3[median-1]) / 2;
+        }else{
+            return arr3[arr3Length/2];
+        }
+    }
+
 
     public static void main(String[] args){
         int[] arr = {3, 5, 4, 1, 9};
@@ -728,6 +838,14 @@ public class ArrayQuestions {
 
         System.out.println(chocolateDistribution(new int[] {12, 4, 7, 9, 2, 23, 25, 41, 30}, 5));
         smallestSubArraySum(new int[] {1, 4, 45, 6, 0, 19}, 51);
+
+        System.out.println("Three way parting" + Arrays.toString(threeWayPartition(new int[] {1, 14, 5, 20, 4, 2, 54, 20, 87, 98, 3, 1, 32}, 14, 20)));
+        System.out.println("Minimum swap: " + minimumSwaps(new int[] {2, 1, 5, 6, 3}, 3));
+        System.out.println("Check palindrome: " + checkArrayIsPalindromeOrNot(new int[] {111, 121, 222, 333, 444}));
+
+        System.out.println("Median of two sorted array same size: " + medianOfTwoSortedArraySameSize(new int[] {1, 12, 15, 26, 38}, new int[] {2, 13, 17, 30, 45}));
+        System.out.println("Median of two sorted array with different size: " + findMedianOfTwoSortedArraysOfDifferentSizes(new int[] {-5, 3, 6, 12, 15 }, new int[] {-12, -10, -6, -3, 4, 10}));
+
     }
 
 }
