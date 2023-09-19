@@ -1,6 +1,6 @@
-import javax.xml.stream.FactoryConfigurationError;
+package arraysprobleams;
+
 import java.math.BigInteger;
-import java.nio.channels.Pipe;
 import java.util.*;
 
 
