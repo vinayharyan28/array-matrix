@@ -43,7 +43,7 @@ public class SpiralFormOFMatrix {
         };
 
         printSpiralFormOfMatrix(spiralArr);
-
+        System.out.println("Git hub test");
 
     }
 }
