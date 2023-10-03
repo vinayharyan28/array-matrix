@@ -46,6 +46,7 @@ public class CountsOnesInSortedRows {
                 {0, 0, 0, 0}
         };
         System.out.println(countsOnesInSortedRows.countOnesInRows(matrix));
+
         // The time complexity of this algorithm is O(m+n), where 'm' is teh number of rows, and 'n' is the number of columns
         System.out.println(countsOnesInSortedRows.optimizeCountOnesInRows(matrix));
 
