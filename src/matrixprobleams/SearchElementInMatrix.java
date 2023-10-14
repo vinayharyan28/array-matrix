@@ -16,9 +16,9 @@ public class SearchElementInMatrix {
     /*
     1. Start from the top-right corner of the matrix (the element at the first row and last column).
     2. Compare the target value with the current element.
-        if the target is equal to the current element, you have found it.
-        if the target is smaller than current element, move one column to the left.
-        if the target is larger than the current element, move one row down.
+        If the target is equal to the current element, you have found it.
+        If the target is smaller than current element, move one column to the left.
+        If the target is larger than the current element, move one row down.
     3. Repeat step 2 until you find the target or go out of bounds (meaning the element doesn't exist in the matrix).
      */
 
